@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { notSoSecret } from '../app';
@@ -7,7 +7,7 @@ import { validateUser } from '../util/validateUser';
 
 import { IUser } from '../models/user';
 
-export const loginRouter = express.Router();
+const loginRouter = express.Router();
 
 loginRouter.post('/api/login', async (req, res) => {
   const { userName, password } = req.body;
@@ -37,3 +37,5 @@ const validatePassword = (user: IUser, password: string) => {
     throw { message: 'Wrong password', status: 400 };
   }
 };
+
+export default loginRouter;

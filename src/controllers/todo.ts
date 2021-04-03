@@ -1,11 +1,11 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 
 import { verifyJWT } from '../util/verifyToken';
 import { Todo } from '../models/todo';
 
 const todoRouter = express.Router();
 
-todoRouter.post('/api/todo', verifyJWT, async (req: any, res: any) => {
+todoRouter.post('/api/todo', verifyJWT, async (req: Request, res: Response) => {
   const { title, description, date, status, user } = req.body;
 
   const userId = user._id;

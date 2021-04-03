@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 
 import { encrypt } from '../util/encryption';
 import { verifyJWT } from '../util/verifyToken';
