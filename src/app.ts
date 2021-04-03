@@ -5,6 +5,7 @@ import loginRouter from './controllers/login';
 import todoRouter from './controllers/todo';
 import userRouter from './controllers/user';
 import postRouter from './controllers/post';
+import imageRouter from './controllers/image';
 
 import { connectToDataBase } from './mongoConnection';
 
@@ -20,6 +21,7 @@ app.use(loginRouter);
 app.use(userRouter);
 app.use(todoRouter);
 app.use(postRouter);
+app.use(imageRouter);
 
 export const server = app.listen(port);
 
