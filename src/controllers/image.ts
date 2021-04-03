@@ -8,10 +8,13 @@ const upload = multer({ dest: 'uploads/' });
 const imageRouter = express.Router();
 
 imageRouter.post('/api/image', upload.single('image'), (req: Request, res: Response) => {
-  const image = binaryToBase64(`./uploads/${req.file.filename}`);
+  try {
+    const image = binaryToBase64(`./uploads/${req.file.filename}`);
 
-  console.log(image);
-  res.json({ image });
+    res.status(201).json({ message: 'Image uploaded with success' });
+  } catch (e) {
+    res.status(400).json(e);
+  }
 });
 
 export default imageRouter;
