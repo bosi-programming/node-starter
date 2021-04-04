@@ -1,11 +1,10 @@
 import express, { Request, Response } from 'express';
 
-import { verifyJWT } from '../util/verifyToken';
 import { Todo } from '../models/todo';
 
 const todoRouter = express.Router();
 
-todoRouter.post('/api/todo', verifyJWT, async (req: Request, res: Response) => {
+todoRouter.post('/api/todo', async (req: Request, res: Response) => {
   const { title, description, date, status, user } = req.body;
 
   const userId = user._id;
@@ -37,7 +36,7 @@ todoRouter.post('/api/todo', verifyJWT, async (req: Request, res: Response) => {
   }
 });
 
-todoRouter.get('/api/todo', verifyJWT, async (req, res) => {
+todoRouter.get('/api/todo', async (req, res) => {
   const { user } = req.body;
   const userId = user._id;
   try {
@@ -48,7 +47,7 @@ todoRouter.get('/api/todo', verifyJWT, async (req, res) => {
   }
 });
 
-todoRouter.delete('/api/todo', verifyJWT, async (req, res) => {
+todoRouter.delete('/api/todo', async (req, res) => {
   const { user, title } = req.body;
   const userId = user._id;
   const deleteTodo = await Todo.deleteOne({ userId, title });
@@ -60,7 +59,7 @@ todoRouter.delete('/api/todo', verifyJWT, async (req, res) => {
   }
 });
 
-todoRouter.put('/api/todo', verifyJWT, async (req, res) => {
+todoRouter.put('/api/todo', async (req, res) => {
   const { title, newTitle, description, date, status, user } = req.body;
   const userId = user._id;
   const userName = user.userName;

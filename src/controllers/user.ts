@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express';
 
 import { encrypt } from '../util/encryption';
-import { verifyJWT } from '../util/verifyToken';
 import { checkForExistingUser } from '../util/checkForExistingUser';
 
 import { User } from '../models/user';
@@ -26,7 +25,7 @@ userRouter.post('/api/users', async (req, res) => {
   }
 });
 
-userRouter.delete('/api/users', verifyJWT, async (req, res) => {
+userRouter.delete('/api/users', async (req, res) => {
   const { userId, userName } = req.body;
 
   const deleteUser = await User.deleteOne({ _id: userId, userName });

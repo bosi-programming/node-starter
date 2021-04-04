@@ -1,11 +1,10 @@
 import express, { Request, Response } from 'express';
 
-import { verifyJWT } from '../util/verifyToken';
 import { Post } from '../models/post';
 
 const postRouter = express.Router();
 
-postRouter.post('/api/post', verifyJWT, async (req: Request, res: Response) => {
+postRouter.post('/api/post', async (req: Request, res: Response) => {
   const { title, content, date, user } = req.body;
 
   const userId = user._id;
@@ -38,7 +37,7 @@ postRouter.post('/api/post', verifyJWT, async (req: Request, res: Response) => {
   }
 });
 
-postRouter.get('/api/post', verifyJWT, async (req: Request, res: Response) => {
+postRouter.get('/api/post', async (req: Request, res: Response) => {
   const { user } = req.body;
 
   const userId = user._id;
@@ -52,7 +51,7 @@ postRouter.get('/api/post', verifyJWT, async (req: Request, res: Response) => {
   }
 });
 
-postRouter.get('/api/post/:id', verifyJWT, async (req: Request, res: Response) => {
+postRouter.get('/api/post/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   const { user } = req.body;
 
@@ -67,7 +66,7 @@ postRouter.get('/api/post/:id', verifyJWT, async (req: Request, res: Response) =
   }
 });
 
-postRouter.patch('api/post/:id', verifyJWT, async (req: Request, res: Response) => {
+postRouter.patch('api/post/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   const { user, title, content } = req.body;
 
@@ -90,7 +89,7 @@ postRouter.patch('api/post/:id', verifyJWT, async (req: Request, res: Response) 
   }
 });
 
-postRouter.delete('/api/post/:id', verifyJWT, async (req: Request, res: Response) => {
+postRouter.delete('/api/post/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   const { user } = req.body;
 

@@ -9,7 +9,19 @@ import { IUser } from '../models/user';
 
 const loginRouter = express.Router();
 
-loginRouter.post('/api/login', async (req, res) => {
+const validatePassword = (user: IUser, password: string) => {
+  if (!password) {
+    throw { message: 'Please write a password', status: 400 };
+  }
+
+  const decriptedPassword = decrypt(user.password, 'banana');
+
+  if (password !== decriptedPassword) {
+    throw { message: 'Wrong password', status: 400 };
+  }
+};
+
+loginRouter.post('/api/login', async (req: Request, res: Response) => {
   const { userName, password } = req.body;
   try {
     const user = await validateUser(userName);
@@ -25,17 +37,5 @@ loginRouter.post('/api/login', async (req, res) => {
     res.status(e.status).json(e);
   }
 });
-
-const validatePassword = (user: IUser, password: string) => {
-  if (!password) {
-    throw { message: 'Please write a password', status: 400 };
-  }
-
-  const decriptedPassword = decrypt(user.password, 'banana');
-
-  if (password !== decriptedPassword) {
-    throw { message: 'Wrong password', status: 400 };
-  }
-};
 
 export default loginRouter;

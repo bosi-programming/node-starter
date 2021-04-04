@@ -1,15 +1,16 @@
 import express, { Request, Response } from 'express';
 import multer from 'multer';
 
-import binaryToBase64 from '../util/binaryToBase64';
 import { verifyJWT } from '../util/verifyToken';
+import binaryToBase64 from '../util/binaryToBase64';
+import base64ToBinary from '../util/base64ToBinary';
 import { Image } from '../models/image';
 
 const upload = multer({ dest: 'uploads/' });
 
 const imageRouter = express.Router();
 
-imageRouter.post('/api/image', verifyJWT, upload.single('image'), async (req: Request, res: Response) => {
+imageRouter.post('/api/image', upload.single('image'), verifyJWT, async (req: Request, res: Response) => {
   try {
     const { imageName, user } = req.body;
     const userId = user._id;
@@ -33,7 +34,7 @@ imageRouter.post('/api/image', verifyJWT, upload.single('image'), async (req: Re
   }
 });
 
-imageRouter.get('/api/image', verifyJWT, async (req: Request, res: Response) => {
+imageRouter.get('/api/image', async (req: Request, res: Response) => {
   const { user } = req.body;
   const userId = user._id;
   const { imageName } = req.query;
@@ -48,7 +49,7 @@ imageRouter.get('/api/image', verifyJWT, async (req: Request, res: Response) => 
   res.status(200).json(images);
 });
 
-imageRouter.get('/api/image/:id', verifyJWT, async (req: Request, res: Response) => {
+imageRouter.get('/api/image/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   const { user } = req.body;
 
@@ -61,10 +62,15 @@ imageRouter.get('/api/image/:id', verifyJWT, async (req: Request, res: Response)
     return;
   }
 
-  res.status(200).json(image);
+  const filePath = `${process.cwd()}/uploads/${image._id}`;
+  try {
+    base64ToBinary(image.image, filePath, res);
+  } catch (e) {
+    res.status(200).json(e);
+  }
 });
 
-imageRouter.delete('/api/image/:id', verifyJWT, async (req: Request, res: Response) => {
+imageRouter.delete('/api/image/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   const { user } = req.body;
 

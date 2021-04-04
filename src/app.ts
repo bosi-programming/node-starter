@@ -7,6 +7,7 @@ import userRouter from './controllers/user';
 import postRouter from './controllers/post';
 import imageRouter from './controllers/image';
 
+import { verifyJWT } from './util/verifyToken';
 import { connectToDataBase } from './mongoConnection';
 
 export const notSoSecret = 'banana';
@@ -16,7 +17,8 @@ const port = process.env.PORT || 3000;
 connectToDataBase();
 
 app.use(bodyParser.json());
-
+app.use(verifyJWT);
+  
 app.use(loginRouter);
 app.use(userRouter);
 app.use(todoRouter);
