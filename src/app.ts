@@ -1,5 +1,4 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 
 import loginRouter from './controllers/login';
 import todoRouter from './controllers/todo';
@@ -16,7 +15,7 @@ const app: express.Application = express();
 const port = process.env.PORT || 3000;
 connectToDataBase();
 
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(verifyJWT);
   
 app.use(loginRouter);
