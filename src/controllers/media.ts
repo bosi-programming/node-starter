@@ -7,7 +7,7 @@ const mediaRouter = express.Router();
 mediaRouter.post('/api/media', async (req: Request, res: Response) => {
   const { mediaName, authorId, publisher, dateOfPublication, typeOfMedia, link } = req.body;
 
-  const mediaExist = Boolean(await Media.findOne({ mediaName, authorId }));
+  const mediaExist = Boolean(await Media.findOne({ mediaName, authorId, typeOfMedia }));
 
   if (mediaExist) {
     res.status(400).json({ message: 'Mídia já existente em nosso sistema' });
@@ -35,7 +35,7 @@ mediaRouter.get('/api/media', async (req: Request, res: Response) => {
 
   const medias = mediaName
     ? await Media.find({
-        mediaName: { $regex: mediaName, $option: 'i' },
+        mediaName: { $regex: mediaName },
       })
     : await Media.find();
 
@@ -55,6 +55,22 @@ mediaRouter.get('/api/media/:id', async (req: Request, res: Response) => {
     res.status(404).json({ message: 'Mídia não encontrada' });
   } else {
     res.status(200).json(media);
+  }
+});
+
+mediaRouter.delete('/api/media/:id', async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const media = await Media.deleteOne({ _id: id });
+
+    if (media.deletedCount === 0) {
+      res.status(404).json({ message: 'Mídia não encontrado' });
+    } else {
+      res.status(200).json(media);
+    }
+  } catch (e) {
+    res.status(404).json(e);
   }
 });
 

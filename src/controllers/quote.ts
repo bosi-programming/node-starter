@@ -13,14 +13,29 @@ quoteRouter.post('/api/quote', async (req: Request, res: Response) => {
     res.status(400).json({ message: 'Citação já existente em nosso sistema' });
     return;
   }
+
+  try {
+    const newQuote = Quote.build({
+      authorId,
+      mediaId,
+      where,
+      content,
+    });
+    await newQuote.save();
+    res.status(200).json(newQuote);
+  } catch (e) {
+    res.status(400).json(e);
+  }
 });
 
 quoteRouter.get('/api/quote', async (req: Request, res: Response) => {
-  const { content } = req.query;
+  const { content, authorId, mediaId } = req.query;
 
   const quotes = content
     ? await Quote.find({
-        content: { $regex: content, $option: 'i' },
+        authorId,
+        mediaId,
+        content: { $regex: content },
       })
     : await Quote.find();
 
@@ -40,6 +55,22 @@ quoteRouter.get('/api/quote/:id', async (req: Request, res: Response) => {
     res.status(404).json({ message: 'Citação não encontrada' });
   } else {
     res.status(200).json(quote);
+  }
+});
+
+quoteRouter.delete('/api/quote/:id', async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const quote = await Quote.deleteOne({ _id: id });
+
+    if (quote.deletedCount === 0) {
+      res.status(404).json({ message: 'Citação não encontrado' });
+    } else {
+      res.status(200).json(quote);
+    }
+  } catch (e) {
+    res.status(404).json(e);
   }
 });
 

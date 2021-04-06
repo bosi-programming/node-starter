@@ -34,4 +34,4 @@ quoteSchema.statics.build = (attr: IQuote) => {
   return new Quote(attr);
 };
 
-export const Quote = mongoose.model<any, QuoteModelInterface>('Qoute', quoteSchema);
+export const Quote = mongoose.model<any, QuoteModelInterface>('Quote', quoteSchema);
