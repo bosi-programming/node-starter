@@ -63,17 +63,17 @@ todoRouter.put('/api/todo', async (req, res) => {
   const { title, newTitle, description, date, status, user } = req.body;
   const userId = user._id;
   const userName = user.userName;
-  const todoExist = await Todo.find({ userId, title });
+  const todoExist = await Todo.findOne({ userId, title });
 
   if (!Boolean(todoExist)) {
     res.status(404).json({ message: 'Tarefa inexistente em nosso sistema' });
     return;
   }
 
-  const finalDate = date ? new Date(date) : todoExist[0].data;
+  const finalDate = date ? new Date(date) : todoExist.data;
   const finalTitle = newTitle ? newTitle : title;
-  const finalStatus = status ? status : todoExist[0].status;
-  const finalDescription = description ? description : todoExist[0].description;
+  const finalStatus = status ? status : todoExist.status;
+  const finalDescription = description ? description : todoExist.description;
 
   try {
     const updateTodo = await Todo.findOneAndUpdate(
@@ -86,6 +86,7 @@ todoRouter.put('/api/todo', async (req, res) => {
         date: finalDate,
         status: finalStatus,
       },
+      { new: true },
     );
     res.status(200).json(updateTodo);
   } catch (e) {

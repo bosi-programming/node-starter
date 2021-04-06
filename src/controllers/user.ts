@@ -11,13 +11,15 @@ userRouter.post('/api/users', async (req, res) => {
   const { userName, authorName, role, mainAccount, password } = req.body;
 
   const hashedPassword = encrypt(password, 'banana');
+  const isExistingUser = Boolean(await checkForExistingUser(userName));
+
+  if (isExistingUser) {
+    res.status(400).json({ message: 'User already exist in database' });
+    return;
+  }
+
   try {
     const newUser = User.build({ userName, authorName, role, mainAccount, password: hashedPassword });
-    const isExistingUser = Boolean(await checkForExistingUser(userName));
-
-    if (isExistingUser) {
-      throw { message: 'User already exist in our database', status: 400 };
-    }
     await newUser.save();
     res.status(200).json(newUser);
   } catch (e) {
@@ -26,7 +28,14 @@ userRouter.post('/api/users', async (req, res) => {
 });
 
 userRouter.delete('/api/users', async (req, res) => {
-  const { userId, userName } = req.body;
+  const { user, userName } = req.body;
+
+  if (!user) {
+    res.status(400).json({ message: 'Usuário não existe em nosso sistema' });
+    return;
+  }
+
+  const userId = user._id;
 
   const deleteUser = await User.deleteOne({ _id: userId, userName });
 

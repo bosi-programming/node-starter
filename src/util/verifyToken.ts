@@ -6,7 +6,7 @@ import { User } from '../models/user';
 
 export const verifyJWT = async (req: Request, res: Response, next: NextFunction) => {
   const path = req.originalUrl;
-  if (path === '/api/login') {
+  if (path === '/api/login' && req.method !== 'DELETE') {
     next();
     return;
   } else if (path === '/api/users' && req.method === 'POST') {

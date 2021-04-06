@@ -15,6 +15,7 @@ describe('Test the user route', () => {
   test('It should receive a 200 for a valid fake new user', async (done) => {
     await request(app)
       .post('/api/users')
+      .set('Content-Type', 'application/json')
       .set('Accept', 'application/json')
       .send({ userName: 'fakeNewUser', authorName: 'fakeNewAuthor', role: 'MAIN', mainAccount: 'fakeNewUser', password: '123456' })
       .then((res) => {
