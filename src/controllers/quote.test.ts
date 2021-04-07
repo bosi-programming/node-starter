@@ -14,7 +14,7 @@ describe('Test the author route', () => {
 
   let token: string;
   // Fake author and media on database
-  let authorId: string = '606c67eadc162c6290a24e35';
+  let authorId: string = '606dbd41731daf18c61c3a84';
   let mediaId: string = '606c6866dc162c6290a24e36';
   let quoteId: string;
 

@@ -28,7 +28,7 @@ imageRouter.post('/api/image', upload.single('image'), verifyJWT, async (req: Re
 
     await newImage.save();
 
-    res.status(201).json({ newImage });
+    res.status(201).json(newImage);
   } catch (e) {
     res.status(400).json(e);
   }
@@ -39,7 +39,9 @@ imageRouter.get('/api/image', async (req: Request, res: Response) => {
   const userId = user._id;
   const { imageName } = req.query;
 
-  const images = imageName ? await Image.findOne({ userId, imageName }) : await Image.find({ userId });
+  const images = imageName
+    ? await Image.find({ userId, imageName: { $regex: imageName } })
+    : await Image.find({ userId });
 
   if (images.length === 0) {
     res.status(404).json({ message: 'Nenhuma imagem encontrada em nosso sistema' });

@@ -13,9 +13,9 @@ describe('Test the author route', () => {
   });
 
   let token: string;
-  let authorId: string = '606dbd41731daf18c61c3a84';
+  let imageId: string;
 
-  test('It should receive a 200 for a valid media', async (done) => {
+  test('It should receive a 200 for a new quote', async (done) => {
     await request(app)
       .post('/api/login')
       .set('Accept', 'application/json')
@@ -27,18 +27,13 @@ describe('Test the author route', () => {
         done(err);
       });
     await request(app)
-      .post('/api/media')
-      .set('Accept', 'application/json')
+      .post('/api/image')
       .set('x-access-token', token)
-      .send({
-        mediaName: 'O habitante e o habitat : a casa senhorial da Corte, da abertura dos portos ao fim do Império',
-        authorId,
-        dateOfPublication: '03-10-2015',
-        typeOfMedia: 'BOOK',
-        link: 'http://repositorio.ufes.br/handle/10/4434',
-      })
+      .attach('image', process.env.PWD + '/test_files/testImage.png')
+      .field('imageName', 'test image')
       .then((res) => {
-        expect(res.status).toBe(200);
+        expect(res.status).toBe(201);
+        imageId = res.body._id;
         done();
       })
       .catch((err) => {
@@ -46,18 +41,12 @@ describe('Test the author route', () => {
       });
   });
 
-  test('It should receive a 400 for a repeated media', async (done) => {
+  test('It should receive a 400 for a repeated image', async (done) => {
     await request(app)
-      .post('/api/media')
-      .set('Accept', 'application/json')
+      .post('/api/image')
       .set('x-access-token', token)
-      .send({
-        mediaName: 'O habitante e o habitat : a casa senhorial da Corte, da abertura dos portos ao fim do Império',
-        authorId,
-        dateOfPublication: '03-10-2015',
-        typeOfMedia: 'BOOK',
-        link: 'http://repositorio.ufes.br/handle/10/4434',
-      })
+      .attach('image', process.env.PWD + '/test_files/testImage.png')
+      .field('imageName', 'test image')
       .then((res) => {
         expect(res.status).toBe(400);
         done();
@@ -67,29 +56,9 @@ describe('Test the author route', () => {
       });
   });
 
-  test('It should receive a 400 for a invalid media', async (done) => {
+  test('It should receive a 200 for get images', async (done) => {
     await request(app)
-      .post('/api/media')
-      .set('Accept', 'application/json')
-      .set('x-access-token', token)
-      .send({
-        mediaName: 'O habitante: a casa senhorial da Corte, da abertura dos portos ao fim do Império',
-        authorId,
-        dateOfPublication: '03-10-2015',
-        link: 'http://repositorio.ufes.br/handle/10/4434',
-      })
-      .then((res) => {
-        expect(res.status).toBe(400);
-        done();
-      })
-      .catch((err) => {
-        done(err);
-      });
-  });
-
-  test('It should receive a 200 for get medias', async (done) => {
-    await request(app)
-      .get('/api/media')
+      .get('/api/image')
       .set('Accept', 'application/json')
       .set('x-access-token', token)
       .send()
@@ -102,26 +71,9 @@ describe('Test the author route', () => {
       });
   });
 
-  let mediaId: string;
-  test('It should receive a 200 for get media with query', async (done) => {
+  test('It should receive a 200 for get image with query', async (done) => {
     await request(app)
-      .get('/api/media?mediaName=O%20habitante')
-      .set('Accept', 'application/json')
-      .set('x-access-token', token)
-      .send()
-      .then((res) => {
-        expect(res.status).toBe(200);
-        mediaId = res.body[0]._id;
-        done();
-      })
-      .catch((err) => {
-        done(err);
-      });
-  });
-
-  test('It should receive a 200 for get mediaId with id', async (done) => {
-    await request(app)
-      .get(`/api/media/${mediaId}`)
+      .get('/api/image?imageName=test')
       .set('Accept', 'application/json')
       .set('x-access-token', token)
       .send()
@@ -134,9 +86,9 @@ describe('Test the author route', () => {
       });
   });
 
-  test('It should receive a 200 for delete mediaId with id', async (done) => {
+  test('It should receive a 200 for get imageId with id', async (done) => {
     await request(app)
-      .delete(`/api/media/${mediaId}`)
+      .get(`/api/image/${imageId}`)
       .set('Accept', 'application/json')
       .set('x-access-token', token)
       .send()
@@ -149,9 +101,24 @@ describe('Test the author route', () => {
       });
   });
 
-  test('It should receive a 404 for delete media with wrong id', async (done) => {
+  test('It should receive a 200 for delete imageId with id', async (done) => {
     await request(app)
-      .delete(`/api/media/${mediaId}wrong`)
+      .delete(`/api/image/${imageId}`)
+      .set('Accept', 'application/json')
+      .set('x-access-token', token)
+      .send()
+      .then((res) => {
+        expect(res.status).toBe(200);
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
+  test('It should receive a 404 for delete image with wrong id', async (done) => {
+    await request(app)
+      .delete(`/api/image/${imageId}wrong`)
       .set('Accept', 'application/json')
       .set('x-access-token', token)
       .send()
