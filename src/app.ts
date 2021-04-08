@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 
 import loginRouter from './controllers/login';
 import todoRouter from './controllers/todo';
@@ -18,6 +19,7 @@ const app: express.Application = express();
 const port = process.env.PORT || 3000;
 connectToDataBase();
 
+app.use(cors());
 app.use(express.json());
 app.use(verifyJWT);
 

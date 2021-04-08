@@ -27,6 +27,16 @@ userRouter.post('/api/users', async (req, res) => {
   }
 });
 
+userRouter.get('/api/users', async (req, res) => {
+  const { user } = req.body;
+
+  if (user) {
+    res.status(200).json({ logged: true, message: ' User logged in' });
+  } else {
+    res.status(200).json({ logged: false, message: 'User not logged or with old token' });
+  }
+});
+
 userRouter.delete('/api/users', async (req, res) => {
   const { user, userName } = req.body;
 
