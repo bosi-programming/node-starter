@@ -7,6 +7,7 @@ import { User } from '../models/user';
 export const verifyJWT = async (req: Request, res: Response, next: NextFunction) => {
   const path = req.originalUrl;
   const token = req.headers['x-access-token'];
+  const hasToken = Boolean(token);
 
   if (path === '/api/login' && req.method !== 'DELETE') {
     next();
@@ -14,7 +15,7 @@ export const verifyJWT = async (req: Request, res: Response, next: NextFunction)
   } else if (path === '/api/users' && req.method === 'POST') {
     next();
     return;
-  } else if (path === '/api/users' && req.method === 'GET' && !!token) {
+  } else if (path === '/api/users' && req.method === 'GET' && !hasToken) {
     next();
     return;
   }

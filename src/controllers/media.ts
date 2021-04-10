@@ -31,13 +31,15 @@ mediaRouter.post('/api/media', async (req: Request, res: Response) => {
 });
 
 mediaRouter.get('/api/media', async (req: Request, res: Response) => {
-  const { mediaName } = req.query;
+  const { mediaName, authorId } = req.query;
 
-  const medias = mediaName
-    ? await Media.find({
-        mediaName: { $regex: mediaName },
-      })
-    : await Media.find();
+  const medias =
+    mediaName || authorId
+      ? await Media.find({
+          mediaName: { $regex: mediaName ? mediaName : '' },
+          authorId,
+        })
+      : await Media.find();
 
   if (medias.length === 0) {
     res.status(404).json({ message: 'Nenhuma mídia achada, crie uma mídia nova para vê-la aqui' });
