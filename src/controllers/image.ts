@@ -64,12 +64,7 @@ imageRouter.get('/api/image/:id', async (req: Request, res: Response) => {
     return;
   }
 
-  const filePath = `${process.cwd()}/uploads/${image._id}`;
-  try {
-    base64ToBinary(image.image, filePath, res);
-  } catch (e) {
-    res.status(200).json(e);
-  }
+  res.status(200).json(image);
 });
 
 imageRouter.delete('/api/image/:id', async (req: Request, res: Response) => {

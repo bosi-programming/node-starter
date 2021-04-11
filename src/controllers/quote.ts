@@ -31,11 +31,11 @@ quoteRouter.post('/api/quote', async (req: Request, res: Response) => {
 quoteRouter.get('/api/quote', async (req: Request, res: Response) => {
   const { content, authorId, mediaId } = req.query;
 
-  const quotes = content
+  const quotes = content || authorId || mediaId
     ? await Quote.find({
         authorId,
         mediaId,
-        content: { $regex: content },
+        content: { $regex: content ? content : '' },
       })
     : await Quote.find();
 
