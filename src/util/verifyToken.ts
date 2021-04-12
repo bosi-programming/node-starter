@@ -18,6 +18,9 @@ export const verifyJWT = async (req: Request, res: Response, next: NextFunction)
   } else if (path === '/api/users' && req.method === 'GET' && !hasToken) {
     next();
     return;
+  } else if (path.includes('download')) {
+    next();
+    return;
   }
 
   let userId;
