@@ -1,0 +1,17 @@
+import mongoose from 'mongoose';
+
+export interface I{{pascalCase name}} {
+}
+
+interface {{pascalCase name}}ModelInterface extends mongoose.Model<any> {
+  build(attr: I{{pascalCase name}}): any;
+}
+
+const {{camelCase name}}Schema = new mongoose.Schema({
+});
+
+{{camelCase name}}Schema.statics.build = (attr: I{{pascalCase name}}) => {
+  return new {{pascalCase name}}(attr);
+};
+
+export const {{pascalCase name}} = mongoose.model<any, {{pascalCase name}}ModelInterface>('{{pascalCase name}}', {{camelCase name}}Schema);

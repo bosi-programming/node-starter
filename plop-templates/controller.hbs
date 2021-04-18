@@ -1,0 +1,19 @@
+import express, { Request, Response } from 'express'; const {{camelCase name}}Router = express.Router();
+
+{{camelCase name}}Router.get('/api/{{dashCase name}}', (req : Request, res: Response) => {
+try {
+res.status(200).json();
+} catch (e) {
+res.status(e.status).json(e);
+}
+})
+
+{{camelCase name}}Router.post('/api/{{dashCase name}}', (req : Request, res: Response) => {
+try {
+res.status(200).json();
+} catch (e) {
+res.status(e.status).json(e);
+}
+})
+
+export default {{ camelCase name}}Router;
