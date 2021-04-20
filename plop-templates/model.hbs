@@ -15,3 +15,4 @@ const {{camelCase name}}Schema = new mongoose.Schema({
 };
 
 export const {{pascalCase name}} = mongoose.model<any, {{pascalCase name}}ModelInterface>('{{pascalCase name}}', {{camelCase name}}Schema);
+export const find{{pascalCase name}}ByID = async (_id: string) => await {{pascalCase name}}.findOne({_id});

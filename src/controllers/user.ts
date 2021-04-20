@@ -7,7 +7,7 @@ import { User } from '../models/user';
 
 const userRouter = express.Router();
 
-userRouter.post('/api/users', async (req, res) => {
+userRouter.post('/api/users', async (req: Request, res: Response) => {
   const { userName, authorName, role, mainAccount, password } = req.body;
 
   const hashedPassword = encrypt(password, 'banana');
@@ -27,7 +27,7 @@ userRouter.post('/api/users', async (req, res) => {
   }
 });
 
-userRouter.get('/api/users', async (req, res) => {
+userRouter.get('/api/users', async (req: Request, res: Response) => {
   const { user } = req.body;
 
   if (user) {
@@ -37,7 +37,7 @@ userRouter.get('/api/users', async (req, res) => {
   }
 });
 
-userRouter.delete('/api/users', async (req, res) => {
+userRouter.delete('/api/users', async (req: Request, res: Response) => {
   const { user, userName } = req.body;
 
   if (!user) {

@@ -46,3 +46,7 @@ userSchema.statics.build = (attr: IUser) => {
 };
 
 export const User = mongoose.model<any, UserModelInterface>('User', userSchema);
+
+export const findUserById = async (_id: string) => await User.findOne({_id});
+export const createUser = async (data: IUser) => await User.build(data).save();
+export const deleteUserById = async (_id: string) => await User.deleteOne({_id});
