@@ -4,14 +4,6 @@
  */
 import { Model, model, Document, Schema } from 'mongoose';
 
-/**
- * User interface.
- *
- * @remarks
- *
- * The interface is componsed of an option _id of type string and obrigatory userName, email and password all of type string.
- */
-
 export interface IUser {
   _id?: string;
   userName: string;
@@ -53,30 +45,47 @@ const userSchema = new Schema<UserDocument, UserModel>({
 export class User {
   static model = model<UserDocument, UserModel>('User', userSchema);
 
-  static build(attr: IUser) {
+  /**
+   * Builds a User
+   *
+   * @param attr - {@link IUser}
+   */
+  static build(attr: IUser):UserDocument {
     return new this.model(attr);
   }
 
-  static async findByUserName(userName: string) {
+  /**
+   * Find a User by userName
+   *
+   * @param {string} userName
+   */
+  static async findByUserName(userName: string): Promise<UserDocument | null> {
     return await this.model.findOne({ userName }).exec();
   }
-  static async findByById(_id: string) {
+
+  /**
+   * Find a User by id
+   *
+   * @param _id - string
+   */
+  static async findByById(_id: string): Promise<UserDocument | null> {
     return await this.model.findOne({ _id }).exec();
   }
-  static async createUser(attr: IUser) {
+
+  /**
+   * Builds a new user and save
+   * @param attr
+   */
+  static async createUser(attr: IUser): Promise<UserDocument | null> {
     const newUser = this.build(attr);
     return await newUser.save();
   }
 
+  /**
+   * Deletes a user
+   * @param _id - string
+   */
   static async deleteById(_id: string) {
     return await this.model.deleteOne({ _id });
   }
 }
-
-/**
- * Creates the User model and its methods.
- *
- * @remarks
- *
- * This model has the methods build, createUser, findByUserName and deleteById.
- */
