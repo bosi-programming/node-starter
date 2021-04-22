@@ -1,0 +1,232 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>content-server</title>
+	<meta name="description" content="Documentation for content-server">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+	<script async src="assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">content-server</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<h1>content-server</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#api-de-lista-de-tarefas--todo-list" id="api-de-lista-de-tarefas--todo-list" style="color: inherit; text-decoration: none;">
+					<h1>API de Lista de tarefas / Todo list</h1>
+				</a>
+				<p>Esta é uma API para cadastro de lista de tarefas com cadastro de usuários e com suporte a upload de tarefas em arquivos de excel em formato xlsx.</p>
+				<p>O sistema realiza tanto o cadastro de usuários como o de tarefas no banco de dados MongoDB.</p>
+				<p>Para usar a API, primeiro o usuário deve se cadastrar no sistema e fazer login para adquirir um token de acesso. A partir daí ele tem acesso tanto ao cadastro e descadastro de tarefas como o seu próprio descadastro total do sistema, incluíndo exclusão de todas as tarefas cadastradas em seu ID/email.</p>
+				<a href="#como-trabalhar" id="como-trabalhar" style="color: inherit; text-decoration: none;">
+					<h2>Como trabalhar</h2>
+				</a>
+				<p>Este projeto foi todo feito em TypScript. Para rodar o projeto em modo de desenvolvimento, foi criado o script <code>npm run dev</code> ou <code>yarn dev</code> que já acompanha as mudanças realizadas pelo programador em tempo real.</p>
+				<p>Com as mudanças feitas, antes de se dar deploy no projeto para produção, é também necessário realizar o build do mesmo, através do comando <code>npm run build</code> ou <code>yarn build</code>.</p>
+				<p>Para dar deploy, neste momento, no sistema é necessário ter acesso a conta principal do Heroku e dar push da branch main para a mesma.</p>
+				<a href="#endpoints" id="endpoints" style="color: inherit; text-decoration: none;">
+					<h2>Endpoints</h2>
+				</a>
+				<a href="#apiusers" id="apiusers" style="color: inherit; text-decoration: none;">
+					<h3>/api/users</h3>
+				</a>
+				<a href="#post" id="post" style="color: inherit; text-decoration: none;">
+					<h4>POST</h4>
+				</a>
+				<p>O post para o endpoind de <code>/api/users</code> é utilizado para criar novos usuários dentro do sistema. Para isso, é necessário enviar para o mesmo um JSON no body da request com os seguintes valores:</p>
+				<ul>
+					<li>cpf: Valor em string senguindo ou o padrão XXX.XXX.XXX-XX ou XXXXXXXXXXX, onde X é qualquer valor entre 0 e 9;</li>
+					<li>email: Valor em string;</li>
+					<li>telefone: Valor com DDD em string seguindo o formato (XX)XXXXX-XXXX ou (XX)XXXX-XXXX;</li>
+					<li>senha: Valor em string.</li>
+				</ul>
+				<p>O sistema também verifica se os valores de CPF, email e telefone seguem os padrões nacionais do mesmo de modo a rejeitar valores inválidos dos mesmos;</p>
+				<a href="#delete" id="delete" style="color: inherit; text-decoration: none;">
+					<h4>Delete</h4>
+				</a>
+				<p>Um delete neste endpoint deleta o usuário e todas as suas tarefas cadastradas do sistema. Realizamos o mesmo a partir do ID retirado do token de acesso. Como uma forma extra de verificar que estamos descadastrando o usuário correto, também pedimos o email do mesmo. </p>
+				<p>Para utilizar este endpoint você precisa colocar na sua request:</p>
+				<p>Header</p>
+				<ul>
+					<li>x-access-token: Valor pego através de login no endpoint <code>/api/login</code></li>
+				</ul>
+				<p>Body</p>
+				<ul>
+					<li>email: string com o email cadastrado no sistema</li>
+				</ul>
+				<a href="#apilogin" id="apilogin" style="color: inherit; text-decoration: none;">
+					<h3>/api/login</h3>
+				</a>
+				<a href="#post-1" id="post-1" style="color: inherit; text-decoration: none;">
+					<h4>POST</h4>
+				</a>
+				<p>Este endpoint somente aceita POST e retorna um JSON Web Token (JWT) para que o usuário tenha acesso ao restante do sistema. Para utilizar este endpoint, precisamos que nos envie no Body da request:</p>
+				<ul>
+					<li>email: string com o email do usuário cadastrado no sistema</li>
+					<li>senha: string com a senha do usuário</li>
+				</ul>
+				<p>O sistema retorna um JSON com a propriedade &quot;token&quot; com o valor dentro desta chave.</p>
+				<a href="#apitodo" id="apitodo" style="color: inherit; text-decoration: none;">
+					<h3>/api/todo</h3>
+				</a>
+				<p>Qualquer tipo de request dentro deste endpoint necessita o uso de um token conseguido a partir do endpoint de login. O mesmo deve ser enviado sempre no Header como a propriedade <code>x-access-token</code>.</p>
+				<a href="#get" id="get" style="color: inherit; text-decoration: none;">
+					<h4>GET</h4>
+				</a>
+				<p>Um GET neste endpoint trás toda a lista de tarefas cadastradas no id do usuário.</p>
+				<a href="#post-2" id="post-2" style="color: inherit; text-decoration: none;">
+					<h4>POST</h4>
+				</a>
+				<p>Um POST em <code>/api/todo</code> realiza o cadastro de uma tarefa dentro do sistema. O sistema checa se a tarefa não existe no sistema para aquele usuário em específico e se não a cadastra no mesmo.</p>
+				<p>Para realizar este cadastro de tarefa, precisamos:</p>
+				<ul>
+					<li>nome: string com o nome dado a tarefa;</li>
+					<li>data: string com data a ser finalizada a tarefa;</li>
+					<li>hora: string hora da tarefa;</li>
+				</ul>
+				<p>Não é obrigatório para o cadastro da tarefa, mas o sistema também aceita valores de status:</p>
+				<ul>
+					<li>status: enum com um dos valores: &quot;naoIniciado&quot;, &quot;emProgresso&quot; ou &quot;completo&quot;.</li>
+				</ul>
+				<a href="#put" id="put" style="color: inherit; text-decoration: none;">
+					<h4>PUT</h4>
+				</a>
+				<p>Um put neste endpoint atualiza uma tarefa em específico do usuário do sistema. Para isso precisamos tanto do webtoken do usuário, do nome da tarefa a ser atualizada e os dados a serem modificados, sendo que qualquer mudança no nome deve ser passada como newNome. Os parâmetros mínimos são:</p>
+				<ul>
+					<li>nome: nome da tarefa a ser atualizada em string.</li>
+				</ul>
+				<p>Pelo menos um entre os parâmetros abaixo:</p>
+				<ul>
+					<li>newNome: string com o novo nome dado a ser dado a tarefa;</li>
+					<li>data: string com data a ser finalizada a tarefa;</li>
+					<li>hora: string hora da tarefa;</li>
+					<li>status: enum com um dos valores: &quot;naoIniciado&quot;, &quot;emProgresso&quot; ou &quot;completo&quot;.</li>
+				</ul>
+				<a href="#delete-1" id="delete-1" style="color: inherit; text-decoration: none;">
+					<h4>Delete</h4>
+				</a>
+				<p>Um delete neste endpoint deleta uma tarefa específica cadastrada na conta do usuário. Para isso, além do webtoken, precisamos:</p>
+				<ul>
+					<li>nome: string com o nome dado a tarefa;</li>
+				</ul>
+				<a href="#apitodobulk" id="apitodobulk" style="color: inherit; text-decoration: none;">
+					<h3>/api/todo/bulk</h3>
+				</a>
+				<p>Este endpoint somente aceita POSTs. A partir do mesmo, o usuário consegue cadastrar várias tarefas de uma única vez através do upload de um arquivo de excel no formato xlsx. Para isto, além do webtoken, precisamos que o arquivo seja enviado no corpo da request dentro do parâmetro <code>tabela</code> e que a tabela contenha as seguintes colunas totalmente preenchidas</p>
+				<ul>
+					<li>nome: string com o nome dado a tarefa;</li>
+					<li>data: string com data a ser finalizada a tarefa;</li>
+					<li>hora: string hora da tarefa;</li>
+				</ul>
+				<p>Não é obrigatório para o cadastro de qualquer uma das tarefas no arquivo, mas o sistema também aceita os seguintes valores de status:</p>
+				<ul>
+					<li>status: enum com um dos valores: &quot;naoIniciado&quot;, &quot;emProgresso&quot; ou &quot;completo&quot;.</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="modules.html">Exports</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/app.html">app</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/controllers_login.html">controllers/login</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/controllers_user.html">controllers/user</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/models_user.html">models/user</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/mongoconnection.html">mongo<wbr>Connection</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/util_encryption.html">util/encryption</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/util_validateuser.html">util/validate<wbr>User</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/util_verifytoken.html">util/verify<wbr>Token</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

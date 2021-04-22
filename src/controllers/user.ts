@@ -1,17 +1,16 @@
 import express, { Request, Response } from 'express';
 
 import { encrypt } from '../util/encryption';
-import { checkForExistingUser } from '../util/checkForExistingUser';
 
 import { User } from '../models/user';
 
 const userRouter = express.Router();
 
 userRouter.post('/api/users', async (req: Request, res: Response) => {
-  const { userName, authorName, role, mainAccount, password } = req.body;
+  const { userName, email, password } = req.body;
 
   const hashedPassword = encrypt(password, 'banana');
-  const isExistingUser = Boolean(await checkForExistingUser(userName));
+  const isExistingUser = Boolean(await User.findByUserName(userName));
 
   if (isExistingUser) {
     res.status(400).json({ message: 'User already exist in database' });
@@ -19,8 +18,7 @@ userRouter.post('/api/users', async (req: Request, res: Response) => {
   }
 
   try {
-    const newUser = User.build({ userName, authorName, role, mainAccount, password: hashedPassword });
-    await newUser.save();
+    const newUser = await User.createUser({ userName, email, password: hashedPassword });
     res.status(200).json(newUser);
   } catch (e) {
     res.status(400).json(e);
@@ -38,7 +36,7 @@ userRouter.get('/api/users', async (req: Request, res: Response) => {
 });
 
 userRouter.delete('/api/users', async (req: Request, res: Response) => {
-  const { user, userName } = req.body;
+  const { user } = req.body;
 
   if (!user) {
     res.status(400).json({ message: 'Usuário não existe em nosso sistema' });
@@ -47,10 +45,10 @@ userRouter.delete('/api/users', async (req: Request, res: Response) => {
 
   const userId = user._id;
 
-  const deleteUser = await User.deleteOne({ _id: userId, userName });
+  const deleteUser = await User.deleteById(userId);
 
   if (deleteUser.deletedCount === 0) {
-    res.status(400).json({ message: 'Usuário não existe em nosso sistema' });
+    res.status(400).json({ message: 'Usuário não existe mais no sistema' });
     return;
   }
 

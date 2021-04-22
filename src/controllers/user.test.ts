@@ -17,7 +17,7 @@ describe('Test the user route', () => {
       .post('/api/users')
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json')
-      .send({ userName: 'fakeNewUser', authorName: 'fakeNewAuthor', role: 'MAIN', mainAccount: 'fakeNewUser', password: '123456' })
+      .send({ userName: 'fakeNewUser', email: 'test@test.com', password: '123456' })
       .then((res) => {
         expect(res.status).toBe(200);
         done();

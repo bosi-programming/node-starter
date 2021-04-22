@@ -37,12 +37,13 @@ export const verifyJWT = async (req: Request, res: Response, next: NextFunction)
     userId = decoded.id;
   });
 
-  try {
-    const user = await User.findOne({ _id: userId });
-    req.body.user = user;
-    next();
-  } catch (e) {
-    res.status(400).json(e);
-    next();
+  if (userId) {
+    try {
+      const user = await User.findByById(userId);
+      req.body.user = user;
+      next();
+    } catch (e) {
+      res.status(400).json(e);
+    }
   }
 };
