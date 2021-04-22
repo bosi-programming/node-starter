@@ -17,12 +17,7 @@ interface UserDocument extends Document {
   password: string;
 }
 
-interface UserModel extends Model<UserDocument> {
-  build(attr: IUser): any;
-  createUser(attr: IUser): any;
-  deleteById(id: string): any;
-  findByUserName(id: string): Promise<IUser>;
-}
+interface UserModel extends Model<UserDocument> {}
 
 const userSchema = new Schema<UserDocument, UserModel>({
   userName: {
@@ -41,7 +36,6 @@ const userSchema = new Schema<UserDocument, UserModel>({
   },
 });
 
-
 export class User {
   static model = model<UserDocument, UserModel>('User', userSchema);
 
@@ -50,7 +44,7 @@ export class User {
    *
    * @param attr - {@link IUser}
    */
-  static build(attr: IUser):UserDocument {
+  static build(attr: IUser): UserDocument {
     return new this.model(attr);
   }
 

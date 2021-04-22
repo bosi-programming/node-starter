@@ -1,18 +1,56 @@
-import mongoose from 'mongoose';
+/**
+ * User model module
+ * @module models/user
+ */
+import { Model, model, Document, Schema } from 'mongoose';
 
 export interface I{{pascalCase name}} {
+  _id?: string;
 }
 
-interface {{pascalCase name}}ModelInterface extends mongoose.Model<any> {
-  build(attr: I{{pascalCase name}}): any;
+interface {{pascalCase name}}Document extends Document {
 }
+
+interface {{pascalCase name}}Model extends Model<{{pascalCase name}}Document> {}
 
 const {{camelCase name}}Schema = new mongoose.Schema({
 });
 
-{{camelCase name}}Schema.statics.build = (attr: I{{pascalCase name}}) => {
-  return new {{pascalCase name}}(attr);
-};
+export class {{pascalCase name}} {
+  static model = model<{{pascalCase name}}Document, {{pascalCase name}}Model>('{{pascalCase name}}', {{camelCase name}}Schema);
 
-export const {{pascalCase name}} = mongoose.model<any, {{pascalCase name}}ModelInterface>('{{pascalCase name}}', {{camelCase name}}Schema);
-export const find{{pascalCase name}}ByID = async (_id: string) => await {{pascalCase name}}.findOne({_id});
+  /**
+   * Builds a {{pascalCase name}}
+   *
+   * @param attr - {@link I{{pascalCase name}} }
+   */
+  static build(attr: I{{pascalCase name}}): {{pascalCase name}}Document {
+    return new this.model(attr);
+  }
+
+  /**
+   * Find a {{pascalCase name}} by id
+   *
+   * @param _id - string
+   */
+  static async findByById(_id: string): Promise<{{pascalCase name}}Document | null> {
+    return await this.model.findOne({ _id }).exec();
+  }
+
+  /**
+   * Builds a new {{camelCase name}} and save
+   * @param attr
+   */
+  static async create{{pascalCase name}}(attr: I{{pascalCase name}}): Promise<{{pascalCase name}}Document | null> {
+    const new{{pascalCase name}} = this.build(attr);
+    return await new{{pascalCase name}}.save();
+  }
+
+  /**
+   * Deletes a {{camelCase name}}
+   * @param _id - string
+   */
+  static async deleteById(_id: string) {
+    return await this.model.deleteOne({ _id });
+  }
+}
