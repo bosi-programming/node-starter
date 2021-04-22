@@ -39,20 +39,19 @@ userRouter.delete('/api/users', async (req: Request, res: Response) => {
   const { user } = req.body;
 
   if (!user) {
-    res.status(400).json({ message: 'Usuário não existe em nosso sistema' });
+    res.status(400).json({ message: "User doesn't exist in our databse anymore" });
     return;
   }
 
   const userId = user._id;
-
   const deleteUser = await User.deleteById(userId);
 
   if (deleteUser.deletedCount === 0) {
-    res.status(400).json({ message: 'Usuário não existe mais no sistema' });
+    res.status(400).json({ message: "User doesn't exist in our databse anymore" });
     return;
   }
 
-  res.status(200).json({ ...deleteUser, message: 'Usuário deletado do sistema' });
+  res.status(200).json({ ...deleteUser, message: 'User deleted from our system' });
 });
 
 export default userRouter;

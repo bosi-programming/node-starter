@@ -62,7 +62,7 @@ export class User {
    *
    * @param _id - string
    */
-  static async findByById(_id: string): Promise<UserDocument | null> {
+  static async findById(_id: string): Promise<UserDocument | null> {
     return await this.model.findOne({ _id }).exec();
   }
 
