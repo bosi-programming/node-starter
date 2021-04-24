@@ -69,6 +69,7 @@ export class User {
   /**
    * Builds a new user and save
    * @param attr
+   * @throws {Error}
    */
   static async createUser(attr: IUser): Promise<UserDocument | null> {
     const isExistingUser = Boolean(await this.findByUserName(attr.userName));
@@ -82,8 +83,10 @@ export class User {
   /**
    * Deletes a user
    * @param _id - string
+   * @throws {Error}
    */
-  static async deleteById(_id: string) {
-    return await this.model.deleteOne({ _id });
+  static async deleteById(attr: IUser) {
+    new this.model(attr).validateSync();
+    return await this.model.deleteOne({ _id: attr._id });
   }
 }

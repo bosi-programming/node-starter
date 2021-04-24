@@ -16,9 +16,8 @@ export const verifyJWT = async (req: Request, res: Response, next: NextFunction)
     return;
   }
 
-  if (!token) return res.status(401).json({ auth: false, message: 'No token provided.' });
-  if (Array.isArray(token))
-    return res.status(400).json({ auth: false, message: 'Something is wrong with your token, please log in again' });
+  if (!token || Array.isArray(token))
+    return res.status(401).json({ auth: false, message: 'Something is wrong with your token  or none was provided.' });
 
   try {
     const decoded: any = jwt.verify(token, notSoSecret);

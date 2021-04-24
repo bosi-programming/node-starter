@@ -12,6 +12,21 @@ describe('Test the user route', () => {
     mongoose.disconnect(done);
   });
 
+  test('It should receive a 400 for a new user without userName', async (done) => {
+    await request(app)
+      .post('/api/users')
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json')
+      .send({ email: 'test@test.com', password: '123456' })
+      .then((res) => {
+        expect(res.status).toBe(400);
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
   test('It should receive a 200 for a valid fake new user', async (done) => {
     await request(app)
       .post('/api/users')
@@ -57,7 +72,6 @@ describe('Test the user route', () => {
       .delete('/api/users')
       .set('Accept', 'application/json')
       .set('x-access-token', token)
-      .send({ userName: 'fakeNewUser' })
       .then((res) => {
         expect(res.status).toBe(200);
         done();
@@ -72,7 +86,6 @@ describe('Test the user route', () => {
       .delete('/api/users')
       .set('Accept', 'application/json')
       .set('x-access-token', token)
-      .send({ userName: 'notFakeNewUser' })
       .then((res) => {
         expect(res.status).toBe(400);
         done();

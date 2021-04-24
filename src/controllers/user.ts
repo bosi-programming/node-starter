@@ -8,14 +8,7 @@ const userRouter = express.Router();
 
 userRouter.post('/api/users', async (req: Request, res: Response) => {
   const { userName, email, password } = req.body;
-
   const hashedPassword = encrypt(password, 'banana');
-  const isExistingUser = Boolean(await User.findByUserName(userName));
-
-  if (isExistingUser) {
-    res.status(400).json({ message: 'User already exist in database' });
-    return;
-  }
 
   try {
     const newUser = await User.createUser({ userName, email, password: hashedPassword });
@@ -38,20 +31,12 @@ userRouter.get('/api/users', async (req: Request, res: Response) => {
 userRouter.delete('/api/users', async (req: Request, res: Response) => {
   const { user } = req.body;
 
-  if (!user) {
+  try {
+    const deleteUser = await User.deleteById(user);
+    res.status(200).json({ ...deleteUser, message: 'User deleted from our system' });
+  } catch (e) {
     res.status(400).json({ message: "User doesn't exist in our databse anymore" });
-    return;
   }
-
-  const userId = user._id;
-  const deleteUser = await User.deleteById(userId);
-
-  if (deleteUser.deletedCount === 0) {
-    res.status(400).json({ message: "User doesn't exist in our databse anymore" });
-    return;
-  }
-
-  res.status(200).json({ ...deleteUser, message: 'User deleted from our system' });
 });
 
 export default userRouter;
