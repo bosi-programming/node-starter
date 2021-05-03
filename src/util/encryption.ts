@@ -1,6 +1,6 @@
 import crypto from "crypto";
 
-export const encrypt = (senha: string, masterKey: string) => {
+export const encrypt = (password: string, masterKey: string) => {
   const iv = crypto.randomBytes(16);
 
   const salt = crypto.randomBytes(64);
@@ -10,7 +10,7 @@ export const encrypt = (senha: string, masterKey: string) => {
   const cipher = crypto.createCipheriv("aes-256-gcm", key, iv);
 
   const encrypted = Buffer.concat([
-    cipher.update(senha, "utf8"),
+    cipher.update(password, "utf8"),
     cipher.final(),
   ]);
 
@@ -19,8 +19,8 @@ export const encrypt = (senha: string, masterKey: string) => {
   return Buffer.concat([salt, iv, tag, encrypted]).toString("base64");
 };
 
-export const decrypt = (encryptSenha: string, masterKey: string) => {
-  const bData = Buffer.from(encryptSenha, "base64");
+export const decrypt = (encryptPassword: string, masterKey: string) => {
+  const bData = Buffer.from(encryptPassword, "base64");
 
   const salt = bData.slice(0, 64);
   const iv = bData.slice(64, 80);
