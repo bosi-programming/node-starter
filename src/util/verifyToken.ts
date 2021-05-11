@@ -14,6 +14,9 @@ export const verifyJWT = async (req: Request, res: Response, next: NextFunction)
   } else if (path === '/api/users' && req.method === 'POST') {
     next();
     return;
+  } else if (path.includes('doc')) {
+    next();
+    return;
   }
 
   if (!token || Array.isArray(token))
