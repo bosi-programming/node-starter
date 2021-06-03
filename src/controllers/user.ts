@@ -19,20 +19,22 @@ userRouter.post('/api/users', async (req: Request, res: Response) => {
 });
 
 userRouter.get('/api/users', async (req: Request, res: Response) => {
-  const { user } = req.body;
+  const user = req.user;
+  console.log(user);
 
   if (user) {
     res.status(200).json({ logged: true, message: ' User logged in' });
   } else {
-    res.status(200).json({ logged: false, message: 'User not logged or with old token' });
+    res.status(200).json({ ...req.body, logged: false, message: 'User not logged or with old token' });
   }
 });
 
 userRouter.delete('/api/users', async (req: Request, res: Response) => {
-  const { user } = req.body;
+  const user = req.user;
+  console.log(user);
 
   try {
-    const deleteUser = await User.deleteById(user);
+    const deleteUser = user;
     res.status(200).json({ ...deleteUser, message: 'User deleted from our system' });
   } catch (e) {
     res.status(400).json({ message: "User doesn't exist in our databse anymore" });

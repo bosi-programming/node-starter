@@ -3,6 +3,9 @@
  * @module models/user
  */
 import { Model, model, Document, Schema } from 'mongoose';
+import jwt from 'jsonwebtoken';
+
+import { decrypt } from '../util/encryption';
 
 export interface IUser {
   _id?: string;
@@ -88,5 +91,45 @@ export class User {
   static async deleteById(attr: IUser) {
     new this.model(attr).validateSync();
     return await this.model.deleteOne({ _id: attr._id });
+  }
+
+  static validatePassword(user: IUser, password: string) {
+    if (!password) {
+      throw { message: 'Please write a password', status: 400 };
+    }
+
+    const decriptedPassword = decrypt(user.password, 'banana');
+
+    if (password !== decriptedPassword) {
+      throw { message: 'Wrong password', status: 400 };
+    }
+  }
+
+  static async validateUser(userName: string) {
+    const user = await this.findByUserName(userName);
+
+    if (!user) {
+      throw { message: 'User not found', status: 400 };
+    }
+
+    return user;
+  }
+
+  static async generateJwt(id: string) {
+    const user = await this.findById(id);
+    if (user) {
+      return jwt.sign(
+        {
+          email: user.email,
+          id: user._id,
+        },
+        'secret',
+        {
+          expiresIn: '2 days',
+        },
+      );
+    } else {
+      throw { message: 'User not found', status: 400 };
+    }
   }
 }
