@@ -19,13 +19,12 @@ userRouter.post('/api/users', async (req: Request, res: Response) => {
 });
 
 userRouter.get('/api/users', async (req: Request, res: Response) => {
-  const { user } = req.body;
-  console.log(user);
+  const { user } = req;
 
   if (user) {
     res.status(200).json({ logged: true, message: ' User logged in' });
   } else {
-    res.status(200).json({ ...req.body, logged: false, message: 'User not logged or with old token' });
+    res.status(200).json({ logged: false, message: 'User not logged or with old token' });
   }
 });
 

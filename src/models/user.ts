@@ -103,6 +103,8 @@ export class User {
     if (password !== decriptedPassword) {
       throw { message: 'Wrong password', status: 400 };
     }
+
+    return true;
   }
 
   static async validateUser(userName: string) {

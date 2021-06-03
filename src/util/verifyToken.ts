@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import passport from 'passport';
 
-import { notSoSecret } from '../app';
 import { User } from '../models/user';
 
 export const verifyJWT = async (req: Request, res: Response, next: NextFunction) => {
@@ -23,10 +22,7 @@ export const verifyJWT = async (req: Request, res: Response, next: NextFunction)
     return res.status(401).json({ auth: false, message: 'Something is wrong with your token  or none was provided.' });
 
   try {
-    const decoded: any = jwt.verify(token, notSoSecret);
-    const user = await User.findById(decoded.id);
-    req.body.user = user;
-    next();
+    passport.authenticate('token', { session: false })(req, res, next);
   } catch (e) {
     res.status(400).json(e);
   }
