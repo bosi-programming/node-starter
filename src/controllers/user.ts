@@ -19,7 +19,7 @@ userRouter.post('/api/users', async (req: Request, res: Response) => {
 });
 
 userRouter.get('/api/users', async (req: Request, res: Response) => {
-  const user = req.user;
+  const { user } = req.body;
   console.log(user);
 
   if (user) {
@@ -30,7 +30,7 @@ userRouter.get('/api/users', async (req: Request, res: Response) => {
 });
 
 userRouter.delete('/api/users', async (req: Request, res: Response) => {
-  const user = req.user;
+  const { user } = req.body;
   console.log(user);
 
   try {
