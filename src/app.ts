@@ -16,6 +16,7 @@ const app: express.Application = express();
 const port = process.env.PORT || 3000;
 connectToDataBase();
 
+
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(verifyJWT);
