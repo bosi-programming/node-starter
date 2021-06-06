@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import config from 'config';
 
 import { encrypt } from '../util/encryption';
 
@@ -6,9 +7,11 @@ import { User } from '../models/user';
 
 const userRouter = express.Router();
 
+const secret: string = config.get('secret');
+
 userRouter.post('/api/users', async (req: Request, res: Response) => {
   const { userName, email, password } = req.body;
-  const hashedPassword = encrypt(password, 'banana');
+  const hashedPassword = encrypt(password, secret);
 
   try {
     const newUser = await User.createUser({ userName, email, password: hashedPassword });
