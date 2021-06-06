@@ -4,10 +4,10 @@
   "description": "",
   "main": "./build/app.js",
   "scripts": {
-    "swagger-autogen": "node swagger.js",
+    "swagger-autogen": "export NODE_ENV=dev && node swagger.js",
     "test": "jest --runInBand --watchAll --verbose --coverage",
     "build": "tsc",
-    "dev": "ts-node-dev --inspect --respawn --ignore-watch node_modules src/app.ts",
+    "dev": "export NODE_ENV=dev && ts-node-dev --inspect --respawn --ignore-watch node_modules src/app.ts",
     "start": "node ./build/app.js",
     "plop": "plop",
     "doc": "typedoc"

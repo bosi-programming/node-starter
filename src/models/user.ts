@@ -80,7 +80,7 @@ export class User {
   static async createUser(attr: IUser): Promise<UserDocument | null> {
     const isExistingUser = Boolean(await this.findByUserName(attr.userName));
     if (isExistingUser) {
-      throw new Error('User already exists');
+      throw { message: 'User already exists' };
     }
     const newUser = this.build(attr);
     return await newUser.save();

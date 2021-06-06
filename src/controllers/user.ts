@@ -10,6 +10,18 @@ const userRouter = express.Router();
 const secret: string = config.get('secret');
 
 userRouter.post('/api/users', async (req: Request, res: Response) => {
+  /* #swagger.parameters['user'] = {
+     in: 'body',
+     type: 'object',
+     required: true,
+     type: 'string',
+     schema: {
+      userName: 'test',
+      email: 'test@test.com',
+      password: '1234567'
+     }
+    }
+   */
   const { userName, email, password } = req.body;
   const hashedPassword = encrypt(password, secret);
 
@@ -22,6 +34,10 @@ userRouter.post('/api/users', async (req: Request, res: Response) => {
 });
 
 userRouter.get('/api/users', async (req: Request, res: Response) => {
+  /* #swagger.security = [{
+      "apiKeyAuth": []
+     }] 
+  */
   const { user } = req;
 
   if (user) {
@@ -32,6 +48,10 @@ userRouter.get('/api/users', async (req: Request, res: Response) => {
 });
 
 userRouter.delete('/api/users', async (req: Request, res: Response) => {
+  /* #swagger.security = [{
+      "apiKeyAuth": []
+     }] 
+  */
   const user = req.user as IUser;
 
   try {

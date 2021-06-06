@@ -24,10 +24,11 @@ app.use(passport.session());
 app.use(express.json({ limit: '10mb' }));
 app.use(verifyJWT);
 
-app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
-
 app.use(loginRouter);
 app.use(userRouter);
+
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
 
 export const server = app.listen(port);
 
