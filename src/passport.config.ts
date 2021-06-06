@@ -1,11 +1,8 @@
-import config from 'config';
 import passport from 'passport';
 import passportLocal from 'passport-local';
 import passportJwt from 'passport-jwt';
 
 import { User, IUser } from './models/user';
-
-const secret: string = config.get('secret');
 
 passport.serializeUser((user: Partial<IUser>, done) => {
   done(null, user._id);
@@ -42,18 +39,15 @@ passport.use('login', localStrategy);
 const JwtStrategy = passportJwt.Strategy;
 const ExtractJwt = passportJwt.ExtractJwt;
 
-const issuer: string = config.get('token.issuer');
-const audience: string = config.get('token.audience');
-
 export const tokenOps = {
   expiresIn: '2 days',
-  issuer,
-  audience,
+  issuer: 'bosibackend',
+  audience: 'yoursite.net',
 };
 
 const opts = {
   jwtFromRequest: ExtractJwt.fromHeader('x-access-token'),
-  secretOrKey: secret,
+  secretOrKey: 'secret',
   ...tokenOps,
 };
 

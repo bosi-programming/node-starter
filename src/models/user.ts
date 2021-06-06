@@ -3,12 +3,9 @@
  * @module models/user
  */
 import { Model, model, Document, Schema } from 'mongoose';
-import config from 'config';
 import jwt from 'jsonwebtoken';
 
 import { decrypt } from '../util/encryption';
-
-const secret: string = config.get('secret');
 
 export interface IUser {
   _id?: string;
@@ -100,7 +97,7 @@ export class User {
       throw { message: 'Please write a password', status: 400 };
     }
 
-    const decriptedPassword = decrypt(user.password, secret);
+    const decriptedPassword = decrypt(user.password, 'banana');
 
     if (password !== decriptedPassword) {
       throw { message: 'Wrong password', status: 400 };

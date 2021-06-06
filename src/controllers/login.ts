@@ -1,14 +1,11 @@
 import express, { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import passport from 'passport';
-import config from 'config';
 
 import { tokenOps } from '../passport.config';
 import { IUser } from '../models/user';
 
 const loginRouter = express.Router();
-
-const secret: string = config.get('secret');
 
 loginRouter.post('/api/login', passport.authenticate('login'), async (req: Request, res: Response) => {
   /* #swagger.parameters['user'] = {
@@ -25,8 +22,8 @@ schema: {
   const user = req.user as IUser;
   if (user) {
     const payload = { sub: user._id };
-    const token = jwt.sign(payload, secret, tokenOps);
-    res.status(200).json({ token });
+    const token = jwt.sign(payload, 'secret', tokenOps);
+    res.json({ token });
   } else {
     res.status(400).json({ message: 'Error while login' });
   }

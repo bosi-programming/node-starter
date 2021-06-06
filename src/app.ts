@@ -1,5 +1,4 @@
 import express from 'express';
-import config from 'config';
 import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
 import passport from 'passport';
@@ -14,8 +13,10 @@ import './passport.config';
 
 const swaggerFile = require('./swagger_output.json');
 
+export const notSoSecret = 'banana';
+
 const app: express.Application = express();
-const port: number = config.get('port');
+const port = process.env.PORT || 3000;
 connectToDataBase();
 
 app.use(cors());

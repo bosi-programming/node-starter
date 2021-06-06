@@ -19,7 +19,6 @@
     "@types/passport-jwt": "^3.0.5",
     "@types/passport-local": "^1.0.33",
     "body-parser": "^1.19.0",
-    "config": "^3.3.6",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
@@ -32,12 +31,11 @@
     "swagger-ui-express": "^4.1.6"
   },
   "engines": {
-    "node": ">=14.x.x"
+    "node": "14.x.x"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.12.16",
     "@microsoft/tsdoc": "^0.13.2",
-    "@types/config": "^0.0.38",
     "@types/cors": "^2.8.10",
     "@types/express": "^4.17.11",
     "@types/jest": "^26.0.20",

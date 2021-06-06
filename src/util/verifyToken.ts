@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import passport from 'passport';
 
+import { User } from '../models/user';
+
 export const verifyJWT = async (req: Request, res: Response, next: NextFunction) => {
   const path = req.originalUrl;
   const token = req.headers['x-access-token'];

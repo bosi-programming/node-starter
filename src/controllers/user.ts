@@ -1,13 +1,10 @@
 import express, { Request, Response } from 'express';
-import config from 'config';
 
 import { encrypt } from '../util/encryption';
 
 import { User, IUser } from '../models/user';
 
 const userRouter = express.Router();
-
-const secret: string = config.get('secret');
 
 userRouter.post('/api/users', async (req: Request, res: Response) => {
   /* #swagger.parameters['user'] = {
@@ -23,7 +20,7 @@ userRouter.post('/api/users', async (req: Request, res: Response) => {
     }
    */
   const { userName, email, password } = req.body;
-  const hashedPassword = encrypt(password, secret);
+  const hashedPassword = encrypt(password, 'banana');
 
   try {
     const newUser = await User.createUser({ userName, email, password: hashedPassword });
