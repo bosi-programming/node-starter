@@ -3,7 +3,7 @@ import config from 'config';
 
 import { encrypt } from '../util/encryption';
 
-import { User } from '../models/user';
+import { User, IUser } from '../models/user';
 
 const userRouter = express.Router();
 
@@ -32,14 +32,18 @@ userRouter.get('/api/users', async (req: Request, res: Response) => {
 });
 
 userRouter.delete('/api/users', async (req: Request, res: Response) => {
-  const { user } = req.body;
-  console.log(user);
+  const user = req.user as IUser;
 
   try {
-    const deleteUser = user;
-    res.status(200).json({ ...deleteUser, message: 'User deleted from our system' });
+    if (user && user._id) {
+      const deleteUser = User.deleteById(user._id);
+      res.status(200).json({ ...deleteUser, message: 'User deleted from our system' });
+      return;
+    }
+
+    throw new Error();
   } catch (e) {
-    res.status(400).json({ message: "User doesn't exist in our databse anymore" });
+    res.status(404).json({ message: "User doesn't exist in our databse anymore" });
   }
 });
 

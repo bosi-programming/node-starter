@@ -3,12 +3,11 @@ import passport from 'passport';
 import passportLocal from 'passport-local';
 import passportJwt from 'passport-jwt';
 
-import { User } from './models/user';
+import { User, IUser } from './models/user';
 
 const secret: string = config.get('secret');
 
-passport.serializeUser((user, done) => {
-  // @ts-ignore
+passport.serializeUser((user: Partial<IUser>, done) => {
   done(null, user._id);
 });
 

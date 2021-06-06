@@ -4,6 +4,7 @@ import passport from 'passport';
 export const verifyJWT = async (req: Request, res: Response, next: NextFunction) => {
   const path = req.originalUrl;
   const token = req.headers['x-access-token'];
+  console.log(req.headers);
 
   if (path === '/api/login') {
     next();
@@ -12,6 +13,9 @@ export const verifyJWT = async (req: Request, res: Response, next: NextFunction)
     next();
     return;
   } else if (path.includes('doc')) {
+    next();
+    return;
+  } else if (req.headers.referer?.includes('doc')) {
     next();
     return;
   }

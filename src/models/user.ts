@@ -91,9 +91,8 @@ export class User {
    * @param _id - string
    * @throws {Error}
    */
-  static async deleteById(attr: IUser) {
-    new this.model(attr).validateSync();
-    return await this.model.deleteOne({ _id: attr._id });
+  static async deleteById(id: string) {
+    return await this.model.deleteOne({ _id: id });
   }
 
   static validatePassword(user: IUser, password: string) {
